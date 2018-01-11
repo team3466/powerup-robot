@@ -18,16 +18,12 @@ public class RobotMap {
     public static int joystick = 0;
     //public static int pitcherBtn = 2;
 
-    public static int leftMotorFrontPort = 1;
-    public static int leftMotorRearPort = 2;
-    public static int rightMotorFrontPort = 3;
-    public static int rightMotorRearPort= 4;
-    //public static int pitcherPort = 5;
+    public static int leftMotorPort = 0;
+    public static int rightMotorPort = 1;
+    //public static int pitcherPort = 5;s
 
-    public static Spark frontLeftMotor = new Spark(leftMotorFrontPort);
-    public static Spark rearLeftMotor = new Spark(leftMotorRearPort);
-    public static Spark frontRightMotor = new Spark(rightMotorFrontPort);
-    public static Spark rearRightMotor = new Spark(rightMotorRearPort);
+    public static Spark leftMotor = new Spark(leftMotorPort);
+    public static Spark rightMotor = new Spark(rightMotorPort);
     //public static Victor captainHook = new Victor(captainHookPort);
 
     public static Gyro gyro = new ADXRS450_Gyro();

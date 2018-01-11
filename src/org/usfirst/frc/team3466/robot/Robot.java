@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -40,7 +42,7 @@ public class Robot extends IterativeRobot
 
     public static boolean InverseDriveOn = false;
 
-    public static DifferentialDrive differentialDrive;
+    DifferentialDrive differentialDrive;
 
     Command autonomousCommand;
     CameraServer server;
@@ -52,10 +54,12 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
+
+
         oi = new OI();
         oi.stick = new Joystick(RobotMap.joystick);
 
-        differentialDrive = new DifferentialDrive(RobotMap.frontLeftMotor, RobotMap.rearLeftMotor, RobotMap.frontRightMotor,RobotMap.rearRightMotor);
+        differentialDrive = new DifferentialDrive(RobotMap.leftMotor, RobotMap.rightMotor);
 
         RobotMap.gyro.calibrate();
 
