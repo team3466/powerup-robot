@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
@@ -46,6 +47,7 @@ public class Robot extends IterativeRobot
 
     Command autonomousCommand;
     CameraServer server;
+    Timer timer;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -59,9 +61,9 @@ public class Robot extends IterativeRobot
         oi = new OI();
         oi.stick = new Joystick(RobotMap.joystick);
 
-        differentialDrive = new DifferentialDrive(RobotMap.leftMotor, RobotMap.rightMotor);
+        timer = new Timer();
 
-        RobotMap.gyro.calibrate();
+        differentialDrive = new DifferentialDrive(RobotMap.leftMotor, RobotMap.rightMotor);
 
         //Initialize camera
         CameraServer.getInstance().startAutomaticCapture();
@@ -85,6 +87,10 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit() 
     {
+        RobotMap.gyro.calibrate();
+
+        timer.reset();
+        timer.start();
         autoSelected = chooser.getSelected();
         // autoSelected = SmartDashboard.getString("Auto Selector",
         // defaultAuto);
@@ -117,6 +123,11 @@ public class Robot extends IterativeRobot
             case DEFAULT_AUTO:
             default:
                 // Put default auto code here
+                if (timer.get() < 2.0) {
+                    differentialDrive.arcadeDrive(-0.25, 0.0); //Drive forward half speed.
+                } else {
+                    differentialDrive.arcadeDrive(0.0, 0.0); //Stop robot
+                }
                 break;
         }
     }
@@ -135,7 +146,7 @@ public class Robot extends IterativeRobot
             Y = -Y;
         }
 
-        differentialDrive.arcadeDrive(Y, X, true);
+        differentialDrive.arcadeDrive(Y, -X, true);
         Scheduler.getInstance().run();
     }
 
