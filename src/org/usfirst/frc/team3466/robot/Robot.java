@@ -124,7 +124,7 @@ public class Robot extends IterativeRobot
             default:
                 // Put default auto code here
                 if (timer.get() < 2.0) {
-                    differentialDrive.arcadeDrive(-0.25, 0.0); //Drive forward half speed.
+                    differentialDrive.arcadeDrive(.5, 0.0); //Drive forward half speed.
                 } else {
                     differentialDrive.arcadeDrive(0.0, 0.0); //Stop robot
                 }
