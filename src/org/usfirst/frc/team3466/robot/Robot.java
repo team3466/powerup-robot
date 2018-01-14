@@ -7,18 +7,12 @@
 
 package org.usfirst.frc.team3466.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
@@ -40,6 +34,9 @@ public class Robot extends IterativeRobot
     //public static final CaptainHook captainHook = new CaptainHook();
 
     public static OI oi;
+
+    double Kp = 0.1;
+    float heading = 0;
 
     public static boolean InverseDriveOn = false;
 
@@ -123,10 +120,18 @@ public class Robot extends IterativeRobot
             case DEFAULT_AUTO:
             default:
                 // Put default auto code here
-                if (timer.get() < 2.0) {
-                    differentialDrive.arcadeDrive(.5, 0.0); //Drive forward half speed.
+                //System.out.println(RobotMap.gyro.getAngle());
+                double angle = RobotMap.gyro.getAngle();
+                if (timer.get() < 6.5) {
+                    differentialDrive.arcadeDrive(.80, (heading-angle)*Kp); //Drive forward .8 speed.
+                } else if (timer.get() < 19.5) {
+                    heading = -87;
+                    differentialDrive.arcadeDrive(.80, (heading-angle)*Kp); //Drive forward .8 speed.
+                } else if (timer.get() < 91.5) {
+                    heading = 0;
+                    differentialDrive.arcadeDrive(.80, (heading-angle)*Kp); //Drive forward .8 speed.
                 } else {
-                    differentialDrive.arcadeDrive(0.0, 0.0); //Stop robot
+                    differentialDrive.arcadeDrive(0, 0);
                 }
                 break;
         }
