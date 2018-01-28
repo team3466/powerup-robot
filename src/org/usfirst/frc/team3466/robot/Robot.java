@@ -36,7 +36,20 @@ public class Robot extends IterativeRobot
     public static OI oi;
 
     double Kp = 0.1;
+    float totalTime = 5;
+    float currentTime = 0;
     float heading = 0;
+    double loopCount = 0;
+
+    float speedError = 0;
+    float speedAdjustment = 0;
+    float maxSpeedAdjustment = .01f;
+    float lastSpeed = 0;
+    float minimumSpeed = 0;
+    float KpSpeed = .025f;
+    float maxSpeed = 1f;
+    float speed = 0;
+    double sampleRate = 0.01;
 
     public static boolean InverseDriveOn = false;
 
@@ -45,6 +58,7 @@ public class Robot extends IterativeRobot
     Command autonomousCommand;
     CameraServer server;
     Timer timer;
+    Timer samplingRateTimer;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -59,6 +73,7 @@ public class Robot extends IterativeRobot
         oi.stick = new Joystick(RobotMap.joystick);
 
         timer = new Timer();
+        samplingRateTimer = new Timer();
 
         differentialDrive = new DifferentialDrive(RobotMap.leftMotor, RobotMap.rightMotor);
 
@@ -88,6 +103,8 @@ public class Robot extends IterativeRobot
 
         timer.reset();
         timer.start();
+        samplingRateTimer.reset();
+        samplingRateTimer.start();
         autoSelected = chooser.getSelected();
         // autoSelected = SmartDashboard.getString("Auto Selector",
         // defaultAuto);
@@ -122,17 +139,35 @@ public class Robot extends IterativeRobot
                 // Put default auto code here
                 //System.out.println(RobotMap.gyro.getAngle());
                 double angle = RobotMap.gyro.getAngle();
-                if (timer.get() < 6.5) {
-                    differentialDrive.arcadeDrive(.80, (heading-angle)*Kp); //Drive forward .8 speed.
-                } else if (timer.get() < 19.5) {
-                    heading = -87;
-                    differentialDrive.arcadeDrive(.80, (heading-angle)*Kp); //Drive forward .8 speed.
-                } else if (timer.get() < 91.5) {
-                    heading = 0;
-                    differentialDrive.arcadeDrive(.80, (heading-angle)*Kp); //Drive forward .8 speed.
-                } else {
-                    differentialDrive.arcadeDrive(0, 0);
+                samplingRateTimer.reset();
+                while (timer.get() < 8) {
+                    //differentialDrive.arcadeDrive(0, (heading-angle)*Kp); //Drive forward .8 speed.
+                    if (samplingRateTimer.get() > sampleRate) {
+                        samplingRateTimer.reset();
+                        speedError = (totalTime-(float)timer.get());
+
+                        speedAdjustment = speedError*KpSpeed;
+                        if (speedAdjustment > maxSpeedAdjustment){
+                            speedAdjustment = maxSpeedAdjustment;
+                        }
+                        if (speedAdjustment < -maxSpeedAdjustment){
+                            speedAdjustment = -maxSpeedAdjustment;
+                        }
+
+                        speed = lastSpeed + speedAdjustment;
+                        if (speed > maxSpeed){
+                            speed = maxSpeed;
+                        }
+                        if (speed < minimumSpeed){
+                            speed = minimumSpeed;
+                        }
+
+                        lastSpeed = speed;
+                        differentialDrive.arcadeDrive(speed, 0);
+                    }
+
                 }
+                differentialDrive.arcadeDrive(0, 0);
                 break;
         }
     }
