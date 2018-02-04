@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import static org.usfirst.frc.team3466.robot.RobotMap.gyro;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -35,12 +37,8 @@ public class Robot extends IterativeRobot
 
     public static OI oi;
 
-    double Kp = 0.1;
-    float totalTime = 5;
-    float currentTime = 0;
-    float heading = 0;
-    double loopCount = 0;
 
+    float totalTime = 3.85f;
     float speedError = 0;
     float speedAdjustment = 0;
     float maxSpeedAdjustment = .01f;
@@ -50,6 +48,26 @@ public class Robot extends IterativeRobot
     float maxSpeed = 1f;
     float speed = 0;
     double sampleRate = 0.01;
+
+    float directionError = 0;
+    float directionAdjustment = 0;
+    float maxDirectionAdjustment = .1f;
+    float lastDirection = 0;
+    float minimumDirection = -1f;
+    float KpDirection = .1f;
+    float maxDirection = 1f;
+    float direction = 0;
+    float desiredDirection = 0;
+
+    float newAngle = -90f;
+    float turnError = 0;
+    float turnAdjustment = 0;
+    float maxTurnAdjustment = .01f;
+    float lastTurn = 0;
+    float minimumTurn = 0;
+    float KpTurn = .025f;
+    float maxTurn = 1f;
+    float turn = 0;
 
     public static boolean InverseDriveOn = false;
 
@@ -71,6 +89,8 @@ public class Robot extends IterativeRobot
 
         oi = new OI();
         oi.stick = new Joystick(RobotMap.joystick);
+
+        gyro.calibrate();
 
         timer = new Timer();
         samplingRateTimer = new Timer();
@@ -99,10 +119,10 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit() 
     {
-        RobotMap.gyro.calibrate();
 
         timer.reset();
         timer.start();
+        gyro.reset();
         samplingRateTimer.reset();
         samplingRateTimer.start();
         autoSelected = chooser.getSelected();
@@ -138,12 +158,14 @@ public class Robot extends IterativeRobot
             default:
                 // Put default auto code here
                 //System.out.println(RobotMap.gyro.getAngle());
-                double angle = RobotMap.gyro.getAngle();
+                //gyro.getAngle();
                 samplingRateTimer.reset();
-                while (timer.get() < 8) {
+                while (timer.get() < totalTime) {
                     //differentialDrive.arcadeDrive(0, (heading-angle)*Kp); //Drive forward .8 speed.
                     if (samplingRateTimer.get() > sampleRate) {
                         samplingRateTimer.reset();
+
+
                         speedError = (totalTime-(float)timer.get());
 
                         speedAdjustment = speedError*KpSpeed;
@@ -163,12 +185,63 @@ public class Robot extends IterativeRobot
                         }
 
                         lastSpeed = speed;
-                        differentialDrive.arcadeDrive(speed, 0);
+
+                        directionError = (desiredDirection - (float)gyro.getAngle());
+                        //directionError = (-desiredDirection + (float)gyro.getAngle()); New Robot
+
+                        directionAdjustment = directionError*KpDirection;
+                     /*   if (directionAdjustment > maxDirectionAdjustment){
+                            directionAdjustment = maxDirectionAdjustment;
+                        }
+                        if (directionAdjustment < -maxDirectionAdjustment){
+                            directionAdjustment = -maxDirectionAdjustment;
+                        }
+                    */
+                        direction = lastDirection + directionAdjustment;
+                        if (direction > maxDirection){
+                            direction = maxDirection;
+                        }
+                        if (direction < minimumDirection){
+                            direction = minimumDirection;
+                        }
+
+                       //lastDirection = direction;
+                        //System.out.println(direction);
+                        System.out.println(gyro.getAngle());
+
+                        differentialDrive.arcadeDrive(speed, direction);
                     }
 
                 }
-                differentialDrive.arcadeDrive(0, 0);
-                break;
+                while (newAngle < gyro.getAngle()) {
+                    if (samplingRateTimer.get() > sampleRate) {
+                        samplingRateTimer.reset();
+
+
+                        turnError = (-newAngle + (float)gyro.getAngle());
+
+                        turnAdjustment = turnError * KpTurn;
+                        if (turnAdjustment > maxTurnAdjustment) {
+                            turnAdjustment = maxTurnAdjustment;
+                        }
+                        if (turnAdjustment < -maxTurnAdjustment) {
+                            turnAdjustment = -maxTurnAdjustment;
+                        }
+
+                        turn = lastTurn + turnAdjustment;
+                        if (turn > maxTurn) {
+                            turn = maxTurn;
+                        }
+                        if (turn < minimumTurn) {
+                            turn = minimumTurn;
+                        }
+
+                        lastTurn = turn;
+                        differentialDrive.arcadeDrive(turn, -1);
+                    }
+                    differentialDrive.arcadeDrive(0, 0);
+                    break;
+                }
         }
     }
 
