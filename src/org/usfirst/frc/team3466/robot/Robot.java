@@ -32,6 +32,7 @@ public class Robot extends IterativeRobot
 
     private static final String DEFAULT_AUTO = "Default";
     private static final String CUSTOM_AUTO = "My Auto";
+    private static final String AUTONOMOUS_STOPPED = "Autonomous Stopped";
     private String autoSelected;
     private SendableChooser<String> chooser = new SendableChooser<>();
     //public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
@@ -61,7 +62,7 @@ public class Robot extends IterativeRobot
     float direction = 0;
     float desiredDirection = 0;
 
-    float newAngle = -90f;
+    float newAngle = -51f;
     float turnError = 0;
     float turnAdjustment = 0;
     float maxTurnAdjustment = .01f;
@@ -243,6 +244,68 @@ public class Robot extends IterativeRobot
                     }
 
                 }
+                differentialDrive.arcadeDrive(0, 0);
+                timer.reset();
+                while (timer.get() <.2);
+                totalTime = 3;
+                desiredDirection = -90;
+                while (timer.get() < totalTime) {
+                    //differentialDrive.arcadeDrive(0, (heading-angle)*Kp); //Drive forward .8 speed.
+                    if (samplingRateTimer.get() > sampleRate) {
+                        samplingRateTimer.reset();
+
+
+                        speedError = (totalTime-(float)timer.get());
+
+                        speedAdjustment = speedError*KpSpeed;
+                        if (speedAdjustment > maxSpeedAdjustment){
+                            speedAdjustment = maxSpeedAdjustment;
+                        }
+                        if (speedAdjustment < -maxSpeedAdjustment){
+                            speedAdjustment = -maxSpeedAdjustment;
+                        }
+
+                        speed = lastSpeed + speedAdjustment;
+                        if (speed > maxSpeed){
+                            speed = maxSpeed;
+                        }
+                        if (speed < minimumSpeed){
+                            speed = minimumSpeed;
+                        }
+
+                        lastSpeed = speed;
+
+                        directionError = (desiredDirection - (float)gyro.getAngle());
+                        //directionError = (-desiredDirection + (float)gyro.getAngle()); New Robot
+
+                        directionAdjustment = directionError*KpDirection;
+                     /*   if (directionAdjustment > maxDirectionAdjustment){
+                            directionAdjustment = maxDirectionAdjustment;
+                        }
+                        if (directionAdjustment < -maxDirectionAdjustment){
+                            directionAdjustment = -maxDirectionAdjustment;
+                        }
+                    */
+                        direction = lastDirection + directionAdjustment;
+                        if (direction > maxDirection){
+                            direction = maxDirection;
+                        }
+                        if (direction < minimumDirection){
+                            direction = minimumDirection;
+                        }
+
+                        //lastDirection = direction;
+                        //System.out.println(direction);
+                        System.out.println(gyro.getAngle());
+
+                        differentialDrive.arcadeDrive(speed, direction);
+                    }
+
+                }
+                differentialDrive.arcadeDrive(0, 0);
+                autoSelected = AUTONOMOUS_STOPPED;
+                break;
+            case AUTONOMOUS_STOPPED:
                 differentialDrive.arcadeDrive(0, 0);
                 break;
         }
