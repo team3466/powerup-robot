@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import org.usfirst.frc.team3466.robot.subsystems.CubeController;
+
 import static org.usfirst.frc.team3466.robot.RobotMap.gyro;
 
 /**
@@ -239,9 +241,10 @@ public class Robot extends IterativeRobot
                         lastTurn = turn;
                         differentialDrive.arcadeDrive(turn, -1);
                     }
-                    differentialDrive.arcadeDrive(0, 0);
-                    break;
+
                 }
+                differentialDrive.arcadeDrive(0, 0);
+                break;
         }
     }
 
