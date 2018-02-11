@@ -1,6 +1,7 @@
 package org.usfirst.frc.team3466.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team3466.robot.OI;
 import org.usfirst.frc.team3466.robot.Robot;
 
 
@@ -9,6 +10,7 @@ public class DriveArcadeCommand extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.drivetrain);
+
     }
 
 
@@ -28,7 +30,7 @@ public class DriveArcadeCommand extends Command {
      */
     @Override
     protected void execute() {
-        Robot.drivetrain.drive();
+        Robot.drivetrain.teleopDrive(-Robot.drivetrain.oi.stick.getY(),-Robot.drivetrain.oi.stick.getX()) ;
     }
 
 

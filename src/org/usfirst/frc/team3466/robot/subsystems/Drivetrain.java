@@ -17,8 +17,6 @@ public class Drivetrain extends Subsystem {
     DifferentialDrive differentialDrive;
     public static OI oi;
 
-
-
     public void initDefaultCommand() {
         // TODO: Set the default command, if any, for a subsystem here. Example:
         //    setDefaultCommand(new MySpecialCommand());
@@ -32,9 +30,14 @@ public class Drivetrain extends Subsystem {
         differentialDrive = new DifferentialDrive(RobotMap.leftMotor, RobotMap.rightMotor);
     }
 
-    public void drive() {
-        double X = -oi.stick.getX();
-        double Y = -oi.stick.getY();
+    public void autoDrive(double speed, double direction) {
+        differentialDrive.arcadeDrive(speed, direction, true);
+        Scheduler.getInstance().run();
+    }
+
+    public void teleopDrive(double Y, double X) {
+        X = -oi.stick.getX();
+        Y = -oi.stick.getY();
         differentialDrive.arcadeDrive(Y, -X, true);
         Scheduler.getInstance().run();
     }

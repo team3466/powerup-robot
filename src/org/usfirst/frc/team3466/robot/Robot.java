@@ -219,7 +219,7 @@ public class Robot extends IterativeRobot
                         //System.out.println(direction);
                         System.out.println(gyro.getAngle());
 
-                        drivetrain.drive(speed, direction);
+                        drivetrain.autoDrive(speed, direction);
                     }
 
                 }
@@ -247,11 +247,11 @@ public class Robot extends IterativeRobot
                         }
 
                         lastTurn = turn;
-                        drivetrain.drive(turn, -1);
+                        drivetrain.autoDrive(turn, -1);
                     }
 
                 }
-                drivetrain.drive(0, 0);
+                drivetrain.autoDrive(0, 0);
                 timer.reset();
                 while (timer.get() <.2);
                 totalTime = 3;
@@ -305,15 +305,15 @@ public class Robot extends IterativeRobot
                         //System.out.println(direction);
                         //System.out.println(gyro.getAngle());
 
-                        drivetrain.drive(speed, direction);
+                        drivetrain.autoDrive(speed, direction);
                     }
 
                 }
-                drivetrain.drive(0, 0);
+                drivetrain.autoDrive(0, 0);
                 autoSelected = AUTONOMOUS_STOPPED;
                 break;
             case AUTONOMOUS_STOPPED:
-                drivetrain.drive(0, 0);
+                drivetrain.autoDrive(0, 0);
                 break;
         }
     }
