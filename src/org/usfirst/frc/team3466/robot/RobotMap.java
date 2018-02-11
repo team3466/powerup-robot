@@ -20,10 +20,14 @@ public class RobotMap {
 
     public static int leftMotorPort = 0;
     public static int rightMotorPort = 1;
-    //public static int pitcherPort = 5;s
+    public static int elevatorPort = 2;
+    public static int climberPort = 3;
+    //public static int pitcherPort = 5;
 
     public static Spark leftMotor = new Spark(leftMotorPort);
     public static Spark rightMotor = new Spark(rightMotorPort);
+    public static Spark elevator = new Spark(elevatorPort);
+    public static Spark climber = new Spark(climberPort);
     //public static Victor captainHook = new Victor(captainHookPort);
 
     public static Gyro gyro = new ADXRS450_Gyro();

@@ -8,14 +8,20 @@
 package org.usfirst.frc.team3466.robot;
 
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
+import org.usfirst.frc.team3466.robot.commands.DriveArcadeCommand;
+import org.usfirst.frc.team3466.robot.subsystems.AutonomousDrive;
+import org.usfirst.frc.team3466.robot.subsystems.Climber;
 import org.usfirst.frc.team3466.robot.subsystems.CubeController;
+import org.usfirst.frc.team3466.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team3466.robot.subsystems.Elevator;
+import org.usfirst.frc.team3466.robot.subsystems.Extender;
 
 import static org.usfirst.frc.team3466.robot.RobotMap.gyro;
 
@@ -30,6 +36,13 @@ import static org.usfirst.frc.team3466.robot.RobotMap.gyro;
 public class Robot extends IterativeRobot
 {
 
+    public static AutonomousDrive autonomousDrive = new AutonomousDrive();
+    public static Climber climber = new Climber();
+    public static CubeController cubeController = new CubeController();
+    public static Drivetrain drivetrain = new Drivetrain();
+    public static Elevator elevator = new Elevator();
+    public static Extender extender = new Extender();
+
     private static final String DEFAULT_AUTO = "Default";
     private static final String CUSTOM_AUTO = "My Auto";
     private static final String AUTONOMOUS_STOPPED = "Autonomous Stopped";
@@ -38,7 +51,7 @@ public class Robot extends IterativeRobot
     //public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
     //public static final CaptainHook captainHook = new CaptainHook();
 
-    public static OI oi;
+
 
 
     float totalTime = 3.85f;
@@ -72,11 +85,8 @@ public class Robot extends IterativeRobot
     float maxTurn = 1f;
     float turn = 0;
 
-    public static boolean InverseDriveOn = false;
-
-    DifferentialDrive differentialDrive;
-
     Command autonomousCommand;
+    Command teleopCommand;
     CameraServer server;
     Timer timer;
     Timer samplingRateTimer;
@@ -89,16 +99,13 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
 
+        teleopCommand = new DriveArcadeCommand();
 
-        oi = new OI();
-        oi.stick = new Joystick(RobotMap.joystick);
 
         gyro.calibrate();
 
         timer = new Timer();
         samplingRateTimer = new Timer();
-
-        differentialDrive = new DifferentialDrive(RobotMap.leftMotor, RobotMap.rightMotor);
 
         //Initialize camera
         CameraServer.getInstance().startAutomaticCapture();
@@ -212,7 +219,7 @@ public class Robot extends IterativeRobot
                         //System.out.println(direction);
                         System.out.println(gyro.getAngle());
 
-                        differentialDrive.arcadeDrive(speed, direction);
+                        drivetrain.drive(speed, direction);
                     }
 
                 }
@@ -240,11 +247,11 @@ public class Robot extends IterativeRobot
                         }
 
                         lastTurn = turn;
-                        differentialDrive.arcadeDrive(turn, -1);
+                        drivetrain.drive(turn, -1);
                     }
 
                 }
-                differentialDrive.arcadeDrive(0, 0);
+                drivetrain.drive(0, 0);
                 timer.reset();
                 while (timer.get() <.2);
                 totalTime = 3;
@@ -296,19 +303,28 @@ public class Robot extends IterativeRobot
 
                         //lastDirection = direction;
                         //System.out.println(direction);
-                        System.out.println(gyro.getAngle());
+                        //System.out.println(gyro.getAngle());
 
-                        differentialDrive.arcadeDrive(speed, direction);
+                        drivetrain.drive(speed, direction);
                     }
 
                 }
-                differentialDrive.arcadeDrive(0, 0);
+                drivetrain.drive(0, 0);
                 autoSelected = AUTONOMOUS_STOPPED;
                 break;
             case AUTONOMOUS_STOPPED:
-                differentialDrive.arcadeDrive(0, 0);
+                drivetrain.drive(0, 0);
                 break;
         }
+    }
+
+    /**
+     * This function is called once at the beginning of operator control.
+     */
+    @Override
+    public void teleopInit()
+    {
+        if (teleopCommand != null) teleopCommand.start();
     }
 
     /**
@@ -317,16 +333,7 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic() 
     {
-        double X = -oi.stick.getX();
-        double Y = -oi.stick.getY();
 
-        if (InverseDriveOn){
-            X = -X;
-            Y = -Y;
-        }
-
-        differentialDrive.arcadeDrive(Y, -X, true);
-        Scheduler.getInstance().run();
     }
 
     /**
