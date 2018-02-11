@@ -36,8 +36,6 @@ public class Drivetrain extends Subsystem {
     }
 
     public void teleopDrive(double Y, double X) {
-        X = -oi.stick.getX();
-        Y = -oi.stick.getY();
         differentialDrive.arcadeDrive(Y, -X, true);
         Scheduler.getInstance().run();
     }
