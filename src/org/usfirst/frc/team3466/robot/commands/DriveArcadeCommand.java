@@ -1,8 +1,9 @@
 package org.usfirst.frc.team3466.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team3466.robot.OI;
 import org.usfirst.frc.team3466.robot.Robot;
+
+import static org.usfirst.frc.team3466.robot.subsystems.Drivetrain.oi;
 
 
 public class DriveArcadeCommand extends Command {
@@ -30,7 +31,7 @@ public class DriveArcadeCommand extends Command {
      */
     @Override
     protected void execute() {
-        Robot.drivetrain.teleopDrive(-Robot.drivetrain.oi.stick.getY(),-Robot.drivetrain.oi.stick.getX()) ;
+        Robot.drivetrain.teleopDrive(-oi.stick.getY(),-oi.stick.getX()) ;
     }
 
 

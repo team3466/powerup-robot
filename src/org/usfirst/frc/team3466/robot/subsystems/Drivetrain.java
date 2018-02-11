@@ -13,8 +13,8 @@ public class Drivetrain extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    public static boolean InverseDriveOn = false;
-    DifferentialDrive differentialDrive;
+    private static boolean InverseDriveOn = false;
+    private DifferentialDrive differentialDrive;
     public static OI oi;
 
     public void initDefaultCommand() {
@@ -31,7 +31,7 @@ public class Drivetrain extends Subsystem {
     }
 
     public void autoDrive(double speed, double direction) {
-        differentialDrive.arcadeDrive(speed, direction, true);
+        differentialDrive.arcadeDrive(speed, direction, false);
         Scheduler.getInstance().run();
     }
 
