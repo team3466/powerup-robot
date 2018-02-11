@@ -16,8 +16,7 @@ public class Drivetrain extends Subsystem {
     public static boolean InverseDriveOn = false;
     DifferentialDrive differentialDrive;
     public static OI oi;
-    public double X = -oi.stick.getX();
-    public double Y = -oi.stick.getY();
+
 
 
     public void initDefaultCommand() {
@@ -33,8 +32,9 @@ public class Drivetrain extends Subsystem {
         differentialDrive = new DifferentialDrive(RobotMap.leftMotor, RobotMap.rightMotor);
     }
 
-    public void drive(double Y, double X) {
-
+    public void drive() {
+        double X = -oi.stick.getX();
+        double Y = -oi.stick.getY();
         differentialDrive.arcadeDrive(Y, -X, true);
         Scheduler.getInstance().run();
     }

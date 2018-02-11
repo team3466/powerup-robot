@@ -28,7 +28,7 @@ public class DriveArcadeCommand extends Command {
      */
     @Override
     protected void execute() {
-        Robot.drivetrain.drive(Robot.drivetrain.Y, Robot.drivetrain.X);
+        Robot.drivetrain.drive();
     }
 
 
