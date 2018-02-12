@@ -22,6 +22,7 @@ public class DriveArcadeCommand extends Command {
     @Override
     protected void initialize() {
         Robot.drivetrain.initDrive();
+        System.out.println("InitDrive Command");
     }
 
 
@@ -32,6 +33,7 @@ public class DriveArcadeCommand extends Command {
     @Override
     protected void execute() {
         Robot.drivetrain.teleopDrive(-oi.stick.getY(),-oi.stick.getX()) ;
+        System.out.println("Execute Drive Command");
     }
 
 

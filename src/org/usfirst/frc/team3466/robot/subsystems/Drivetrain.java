@@ -32,12 +32,10 @@ public class Drivetrain extends Subsystem {
 
     public void autoDrive(double speed, double direction) {
         differentialDrive.arcadeDrive(speed, direction, false);
-        Scheduler.getInstance().run();
     }
 
     public void teleopDrive(double Y, double X) {
         differentialDrive.arcadeDrive(Y, -X, true);
-        Scheduler.getInstance().run();
     }
 
     public void driveInverse(double Y, double X) {
@@ -48,7 +46,6 @@ public class Drivetrain extends Subsystem {
         }
 
         differentialDrive.arcadeDrive(Y, -X, true);
-        Scheduler.getInstance().run();
     }
 }
 
