@@ -33,7 +33,7 @@ public class Drivetrain extends Subsystem {
         enc = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
         double distance = enc.getDistance();
         //enc.setDistancePerPulse(0.0130291666666667); 6-inch
-        enc.setDistancePerPulse(0.0087); //4-inch
+        enc.setDistancePerPulse(0.0349); //4-inch with 360 degree accuracy
         enc.reset();
     }
 
