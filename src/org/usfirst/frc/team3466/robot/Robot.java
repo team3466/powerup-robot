@@ -101,7 +101,6 @@ public class Robot extends IterativeRobot
 
         teleopCommand = new DriveArcadeCommand();
 
-
         gyro.calibrate();
 
         timer = new Timer();

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3466.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -28,6 +29,11 @@ public class Drivetrain extends Subsystem {
         oi = new OI();
         oi.stick = new Joystick(RobotMap.joystick);
         differentialDrive = new DifferentialDrive(RobotMap.leftMotor, RobotMap.rightMotor);
+        Encoder enc;
+        enc = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
+        double distance = enc.getDistance();
+        enc.setDistancePerPulse(0.0130291666666667);
+        enc.reset();
     }
 
     public void autoDrive(double speed, double direction) {
