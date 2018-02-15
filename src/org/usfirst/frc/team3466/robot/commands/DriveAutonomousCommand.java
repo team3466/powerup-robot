@@ -8,6 +8,7 @@ public class DriveAutonomousCommand extends Command {
     public DriveAutonomousCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+        requires(Robot.drivetrain);
     }
 
 
@@ -27,7 +28,8 @@ public class DriveAutonomousCommand extends Command {
      */
     @Override
     protected void execute() {
-
+        Robot.drivetrain.driveDistanceForward(60, 0);
+        Robot.drivetrain.turnDirectionCW(90);
     }
 
 

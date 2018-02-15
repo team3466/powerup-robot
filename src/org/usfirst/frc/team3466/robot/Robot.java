@@ -54,36 +54,9 @@ public class Robot extends IterativeRobot
 
 
 
-    float totalTime = 3.85f;
-    float speedError = 0;
-    float speedAdjustment = 0;
-    float maxSpeedAdjustment = .01f;
-    float lastSpeed = 0;
-    float minimumSpeed = 0;
-    float KpSpeed = .025f;
-    float maxSpeed = 1f;
-    float speed = 0;
-    double sampleRate = 0.01;
 
-    float directionError = 0;
-    float directionAdjustment = 0;
-    float maxDirectionAdjustment = .1f;
-    float lastDirection = 0;
-    float minimumDirection = -1f;
-    float KpDirection = .1f;
-    float maxDirection = 1f;
-    float direction = 0;
-    float desiredDirection = 0;
 
-    float newAngle = -51f;
-    float turnError = 0;
-    float turnAdjustment = 0;
-    float maxTurnAdjustment = .01f;
-    float lastTurn = 0;
-    float minimumTurn = 0;
-    float KpTurn = .025f;
-    float maxTurn = 1f;
-    float turn = 0;
+
 
     Command autonomousCommand;
     Command teleopCommand;
@@ -169,145 +142,13 @@ public class Robot extends IterativeRobot
                 //System.out.println(RobotMap.gyro.getAngle());
                 //gyro.getAngle();
                 samplingRateTimer.reset();
-                while (timer.get() < totalTime) {
-                    //differentialDrive.arcadeDrive(0, (heading-angle)*Kp); //Drive forward .8 speed.
-                    if (samplingRateTimer.get() > sampleRate) {
-                        samplingRateTimer.reset();
 
 
-                        speedError = (totalTime-(float)timer.get());
-
-                        speedAdjustment = speedError*KpSpeed;
-                        if (speedAdjustment > maxSpeedAdjustment){
-                            speedAdjustment = maxSpeedAdjustment;
-                        }
-                        if (speedAdjustment < -maxSpeedAdjustment){
-                            speedAdjustment = -maxSpeedAdjustment;
-                        }
-
-                        speed = lastSpeed + speedAdjustment;
-                        if (speed > maxSpeed){
-                            speed = maxSpeed;
-                        }
-                        if (speed < minimumSpeed){
-                            speed = minimumSpeed;
-                        }
-
-                        lastSpeed = speed;
-
-                        directionError = (desiredDirection - (float)gyro.getAngle());
-                        //directionError = (-desiredDirection + (float)gyro.getAngle()); New Robot
-
-                        directionAdjustment = directionError*KpDirection;
-                     /*   if (directionAdjustment > maxDirectionAdjustment){
-                            directionAdjustment = maxDirectionAdjustment;
-                        }
-                        if (directionAdjustment < -maxDirectionAdjustment){
-                            directionAdjustment = -maxDirectionAdjustment;
-                        }
-                    */
-                        direction = lastDirection + directionAdjustment;
-                        if (direction > maxDirection){
-                            direction = maxDirection;
-                        }
-                        if (direction < minimumDirection){
-                            direction = minimumDirection;
-                        }
-
-                       //lastDirection = direction;
-                        //System.out.println(direction);
-                        System.out.println(gyro.getAngle());
-
-                        drivetrain.autoDrive(speed, direction);
-                    }
-
-                }
-                while (newAngle < gyro.getAngle()) {
-                    if (samplingRateTimer.get() > sampleRate) {
-                        samplingRateTimer.reset();
-
-
-                        turnError = (-newAngle + (float)gyro.getAngle());
-
-                        turnAdjustment = turnError * KpTurn;
-                        if (turnAdjustment > maxTurnAdjustment) {
-                            turnAdjustment = maxTurnAdjustment;
-                        }
-                        if (turnAdjustment < -maxTurnAdjustment) {
-                            turnAdjustment = -maxTurnAdjustment;
-                        }
-
-                        turn = lastTurn + turnAdjustment;
-                        if (turn > maxTurn) {
-                            turn = maxTurn;
-                        }
-                        if (turn < minimumTurn) {
-                            turn = minimumTurn;
-                        }
-
-                        lastTurn = turn;
-                        drivetrain.autoDrive(turn, -1);
-                    }
-
-                }
-                drivetrain.autoDrive(0, 0);
                 timer.reset();
                 while (timer.get() <.2);
-                totalTime = 3;
-                desiredDirection = -90;
-                while (timer.get() < totalTime) {
-                    //differentialDrive.arcadeDrive(0, (heading-angle)*Kp); //Drive forward .8 speed.
-                    if (samplingRateTimer.get() > sampleRate) {
-                        samplingRateTimer.reset();
+                //totalTime = 3;
+                //desiredDirection = -90;
 
-
-                        speedError = (totalTime-(float)timer.get());
-
-                        speedAdjustment = speedError*KpSpeed;
-                        if (speedAdjustment > maxSpeedAdjustment){
-                            speedAdjustment = maxSpeedAdjustment;
-                        }
-                        if (speedAdjustment < -maxSpeedAdjustment){
-                            speedAdjustment = -maxSpeedAdjustment;
-                        }
-
-                        speed = lastSpeed + speedAdjustment;
-                        if (speed > maxSpeed){
-                            speed = maxSpeed;
-                        }
-                        if (speed < minimumSpeed){
-                            speed = minimumSpeed;
-                        }
-
-                        lastSpeed = speed;
-
-                        directionError = (desiredDirection - (float)gyro.getAngle());
-                        //directionError = (-desiredDirection + (float)gyro.getAngle()); New Robot
-
-                        directionAdjustment = directionError*KpDirection;
-                     /*   if (directionAdjustment > maxDirectionAdjustment){
-                            directionAdjustment = maxDirectionAdjustment;
-                        }
-                        if (directionAdjustment < -maxDirectionAdjustment){
-                            directionAdjustment = -maxDirectionAdjustment;
-                        }
-                    */
-                        direction = lastDirection + directionAdjustment;
-                        if (direction > maxDirection){
-                            direction = maxDirection;
-                        }
-                        if (direction < minimumDirection){
-                            direction = minimumDirection;
-                        }
-
-                        //lastDirection = direction;
-                        //System.out.println(direction);
-                        //System.out.println(gyro.getAngle());
-
-                        drivetrain.autoDrive(speed, direction);
-                    }
-
-                }
                 drivetrain.autoDrive(0, 0);
                 autoSelected = AUTONOMOUS_STOPPED;
                 break;
