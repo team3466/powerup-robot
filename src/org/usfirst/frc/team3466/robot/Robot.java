@@ -13,10 +13,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import org.usfirst.frc.team3466.robot.commands.DriveArcadeCommand;
-import org.usfirst.frc.team3466.robot.subsystems.AutonomousDrive;
+import org.usfirst.frc.team3466.robot.commands.DriveAutonomousCommand;
 import org.usfirst.frc.team3466.robot.subsystems.Climber;
 import org.usfirst.frc.team3466.robot.subsystems.CubeController;
 import org.usfirst.frc.team3466.robot.subsystems.Drivetrain;
@@ -36,7 +35,6 @@ import static org.usfirst.frc.team3466.robot.RobotMap.gyro;
 public class Robot extends IterativeRobot
 {
 
-    public static AutonomousDrive autonomousDrive = new AutonomousDrive();
     public static Climber climber = new Climber();
     public static CubeController cubeController = new CubeController();
     public static Drivetrain drivetrain = new Drivetrain();
@@ -51,18 +49,9 @@ public class Robot extends IterativeRobot
     //public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
     //public static final CaptainHook captainHook = new CaptainHook();
 
-
-
-
-
-
-
-
     Command autonomousCommand;
     Command teleopCommand;
     CameraServer server;
-    Timer timer;
-    Timer samplingRateTimer;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -72,12 +61,10 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
 
+        autonomousCommand = new DriveAutonomousCommand();
         teleopCommand = new DriveArcadeCommand();
 
         gyro.calibrate();
-
-        timer = new Timer();
-        samplingRateTimer = new Timer();
 
         //Initialize camera
         CameraServer.getInstance().startAutomaticCapture();
@@ -101,16 +88,13 @@ public class Robot extends IterativeRobot
     @Override
     public void autonomousInit() 
     {
-
-        timer.reset();
-        timer.start();
         gyro.reset();
-        samplingRateTimer.reset();
-        samplingRateTimer.start();
         autoSelected = chooser.getSelected();
         // autoSelected = SmartDashboard.getString("Auto Selector",
         // defaultAuto);
         System.out.println("Auto selected: " + autoSelected);
+
+        if (autonomousCommand != null) autonomousCommand.start();
 
         // Example plate assignment code from WPILib manual
         // Data can be faked in DS for practice when no FMS is present
@@ -141,19 +125,14 @@ public class Robot extends IterativeRobot
                 // Put default auto code here
                 //System.out.println(RobotMap.gyro.getAngle());
                 //gyro.getAngle();
-                samplingRateTimer.reset();
-
-
-                timer.reset();
-                while (timer.get() <.2);
                 //totalTime = 3;
                 //desiredDirection = -90;
-
-                drivetrain.autoDrive(0, 0);
-                autoSelected = AUTONOMOUS_STOPPED;
+                //drivetrain.autoDrive(0, 0);
+                //autoSelected = AUTONOMOUS_STOPPED;
+                Scheduler.getInstance().run();
                 break;
             case AUTONOMOUS_STOPPED:
-                drivetrain.autoDrive(0, 0);
+                //drivetrain.autoDrive(0, 0);
                 break;
         }
     }

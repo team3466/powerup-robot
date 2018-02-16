@@ -197,7 +197,7 @@ public class Drivetrain extends Subsystem {
     public void turnDirectionCW(float newAngle){
 
         float stoppingAngle = 39f;
-        newAngle = newAngle - stoppingAngle;
+        newAngle -= stoppingAngle;
         float turnError = 0;
         float turnAdjustment = 0;
         float maxTurnAdjustment = .01f;

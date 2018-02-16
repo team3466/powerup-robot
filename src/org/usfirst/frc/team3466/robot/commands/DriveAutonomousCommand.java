@@ -65,7 +65,7 @@ public class DriveAutonomousCommand extends Command {
      */
     @Override
     protected void end() {
-
+        Robot.drivetrain.autoDrive(0, 0) ;
     }
 
 
