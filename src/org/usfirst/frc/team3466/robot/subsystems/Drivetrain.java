@@ -84,9 +84,9 @@ public class Drivetrain extends Subsystem {
         float KpDirection = .1f;
         float maxDirection = 1f;
         float direction = 0;
-        float stoppingDistance = 12;
+        float stoppingDistance = 30;
 
-        enc.reset();
+        //enc.reset();
         float currentDistance = 0;
         Timer sampleRateTimer;
         sampleRateTimer = new Timer();
@@ -150,13 +150,12 @@ public class Drivetrain extends Subsystem {
             }
         }
         while (currentDistance < desiredDistance) {
-
             if (sampleRateTimer.get() > sampleRate) {
                 sampleRateTimer.reset();
                 currentDistance = (float) enc.getDistance();
                 //differentialDrive.arcadeDrive(0, (heading-angle)*Kp); //Drive forward .8 speed.
 
-                speed = lastSpeed - maxSpeedAdjustment;
+                speed = lastSpeed - (maxSpeedAdjustment*20);
 
                 if (speed < minimumSpeed) {
                     speed = minimumSpeed;
@@ -167,7 +166,7 @@ public class Drivetrain extends Subsystem {
                 directionError = (desiredDirection - (float)gyro.getAngle());
                 //directionError = (-desiredDirection + (float)gyro.getAngle()); New Robot
 
-                directionAdjustment = directionError * KpDirection;
+                directionAdjustment = directionError * KpDirection * speed;
                      /*   if (directionAdjustment > maxDirectionAdjustment){
                             directionAdjustment = maxDirectionAdjustment;
                         }
@@ -188,15 +187,18 @@ public class Drivetrain extends Subsystem {
                 //System.out.println(gyro.getAngle());
 
                 autoDrive(speed, direction);
+                System.out.println(speed);
 
             }
         }
         autoDrive(0, 0);
+        //enc.reset();
     }
 
     public void turnDirectionCW(float newAngle){
 
-        float stoppingAngle = 39f;
+        enc.reset();
+        float stoppingAngle = -18f;
         newAngle -= stoppingAngle;
         float turnError = 0;
         float turnAdjustment = 0;
@@ -228,7 +230,7 @@ public class Drivetrain extends Subsystem {
                 }
 
                 lastTurn = turn;
-                autoDrive(turn, -1);
+                autoDrive(0, -0.5);
 
         }
         autoDrive(0, 0);

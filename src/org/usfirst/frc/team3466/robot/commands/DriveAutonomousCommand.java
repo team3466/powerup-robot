@@ -1,5 +1,6 @@
 package org.usfirst.frc.team3466.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team3466.robot.Robot;
 
@@ -28,12 +29,17 @@ public class DriveAutonomousCommand extends Command {
      */
     @Override
     protected void execute() {
-        Robot.drivetrain.driveDistanceForward(60, 0);
-        Robot.drivetrain.turnDirectionCW(90);
-    }
+        Robot.drivetrain.driveDistanceForward(120, 0);
+        Robot.drivetrain.turnDirectionCW(-90);
+        Timer.delay(.2);
+        Robot.drivetrain.driveDistanceForward(120, -90);
+        //Robot.drivetrain.autoDrive(.4, -1);
+        while(true);
+        //Timer.delay(3);
+     }
 
 
-    /**
+     /**
      * <p>
      * Returns whether this command is finished. If it is, then the command will be removed and
      * {@link #end()} will be called.
@@ -85,6 +91,7 @@ public class DriveAutonomousCommand extends Command {
      */
     @Override
     protected void interrupted() {
+        Robot.drivetrain.autoDrive(0, 0) ;
         super.interrupted();
     }
 }

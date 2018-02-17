@@ -27,10 +27,10 @@ public class RobotMap {
 
     //Sparks are for this year's robot, Victors for last year's.
 
-    //public static Spark rightMotor = new Spark(rightMotorPort);
-    //public static Spark leftMotor = new Spark(leftMotorPort);
-    public static Victor rightMotor = new Victor(rightMotorPort);
-    public static Victor leftMotor = new Victor(leftMotorPort);
+    public static Spark rightMotor = new Spark(rightMotorPort);
+    public static Spark leftMotor = new Spark(leftMotorPort);
+    //public static Victor rightMotor = new Victor(rightMotorPort);
+    //public static Victor leftMotor = new Victor(leftMotorPort);
     public static Spark elevator = new Spark(elevatorPort);
     public static Spark climber = new Spark(climberPort);
     //public static Victor captainHook = new Victor(captainHookPort);
