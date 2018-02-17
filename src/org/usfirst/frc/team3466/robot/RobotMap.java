@@ -22,6 +22,9 @@ public class RobotMap {
     public static int rightMotorPort = 1;
     public static int elevatorPort = 2;
     public static int climberPort = 3;
+    //public static int port = 7;
+    //public static int port = 8;
+    //public statid int port = 9;
     //public static int pitcherPort = 5;
 
 

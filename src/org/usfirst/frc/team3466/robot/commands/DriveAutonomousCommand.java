@@ -29,13 +29,38 @@ public class DriveAutonomousCommand extends Command {
      */
     @Override
     protected void execute() {
-        Robot.drivetrain.driveDistanceForward(120, 0);
+        Robot.drivetrain.driveDistanceForward(90-4, 0);
+        //Timer.delay(2);
+        Robot.drivetrain.turnDirectionCCW(-90);
+        //Timer.delay(2);
+        Robot.drivetrain.driveDistanceForward(252-4, -90);
+        //Timer.delay(2);
+        Robot.drivetrain.turnDirectionCCW(-180);
+        //Timer.delay(2);
+        Robot.drivetrain.driveDistanceForward(58-4, -180);
+        //Timer.delay(8);
         Robot.drivetrain.turnDirectionCW(-90);
-        Timer.delay(.2);
-        Robot.drivetrain.driveDistanceForward(120, -90);
-        //Robot.drivetrain.autoDrive(.4, -1);
-        while(true);
+        //Timer.delay(2);
+        Robot.drivetrain.driveDistanceForward(72-4, -90);
+        //Timer.delay(2);
+        Robot.drivetrain.turnDirectionCW(0);
+        //Timer.delay(2);
+        Robot.drivetrain.driveDistanceForward(162-4, 0);
+        //Timer.delay(4);
+        Robot.drivetrain.turnDirectionCW(45);
+        //Timer.delay(4);
+        Robot.drivetrain.driveDistanceForward(27-4, 45);
+        //Timer.delay(4);
+        Robot.drivetrain.turnDirectionCCW(0);
+        //Timer.delay(4);
+        Robot.drivetrain.driveDistanceForward(48-4, 0);
+
+        //Timer.delay(.2);
+        //Robot.drivetrain.driveDistanceForward(120, -90);
+        //Robot.drivetrain.autoDrive(0.5, -0.5);
+        //while(true);
         //Timer.delay(3);
+        //isFinished();
      }
 
 
@@ -59,7 +84,7 @@ public class DriveAutonomousCommand extends Command {
     @Override
     protected boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return false;
+        return true;
     }
 
 

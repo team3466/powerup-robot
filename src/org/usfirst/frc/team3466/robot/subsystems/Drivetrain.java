@@ -68,21 +68,18 @@ public class Drivetrain extends Subsystem {
 
     public void driveDistanceForward(float desiredDistance, float desiredDirection) {
 
-        float speedError = 0;
-        float speedAdjustment = 0;
+        enc.reset();
         float maxSpeedAdjustment = .01f;
         float lastSpeed = 0;
         float minimumSpeed = .5f;
-        float KpSpeed = .025f;
         float maxSpeed = 1f;
         float speed = 0;
 
         float directionError = 0;
         float directionAdjustment = 0;
         float lastDirection = 0;
-        float minimumDirection = -1f;
-        float KpDirection = .1f;
-        float maxDirection = 1f;
+        float KpDirection = .05f;
+        float maxDirection = 0.4f;
         float direction = 0;
         float stoppingDistance = 30;
 
@@ -100,25 +97,12 @@ public class Drivetrain extends Subsystem {
             if (sampleRateTimer.get() > sampleRate) {
                 sampleRateTimer.reset();
                 currentDistance = (float) enc.getDistance();
-                //differentialDrive.arcadeDrive(0, (heading-angle)*Kp); //Drive forward .8 speed.
 
-                speedError = (desiredDistance - currentDistance);
-
-                speedAdjustment = speedError * KpSpeed;
-                if (speedAdjustment > maxSpeedAdjustment) {
-                    speedAdjustment = maxSpeedAdjustment;
-                }
-                if (speedAdjustment < -maxSpeedAdjustment) {
-                    speedAdjustment = -maxSpeedAdjustment;
-                }
-
-                speed = lastSpeed + speedAdjustment;
+                speed = lastSpeed + maxSpeedAdjustment;
                 if (speed > maxSpeed) {
                     speed = maxSpeed;
                 }
-                if (speed < minimumSpeed) {
-                    speed = minimumSpeed;
-                }
+
 
                 lastSpeed = speed;
 
@@ -126,24 +110,14 @@ public class Drivetrain extends Subsystem {
                 //directionError = (-desiredDirection + (float)gyro.getAngle()); New Robot
 
                 directionAdjustment = directionError * KpDirection;
-                     /*   if (directionAdjustment > maxDirectionAdjustment){
-                            directionAdjustment = maxDirectionAdjustment;
-                        }
-                        if (directionAdjustment < -maxDirectionAdjustment){
-                            directionAdjustment = -maxDirectionAdjustment;
-                        }
-                    */
+
                 direction = lastDirection + directionAdjustment;
                 if (direction > maxDirection) {
                     direction = maxDirection;
                 }
-                if (direction < minimumDirection) {
-                    direction = minimumDirection;
+                if (direction < -maxDirection) {
+                    direction = -maxDirection;
                 }
-
-                //lastDirection = direction;
-                //System.out.println(direction);
-                //System.out.println(gyro.getAngle());
 
                 autoDrive(speed, direction);
 
@@ -178,8 +152,8 @@ public class Drivetrain extends Subsystem {
                 if (direction > maxDirection) {
                     direction = maxDirection;
                 }
-                if (direction < minimumDirection) {
-                    direction = minimumDirection;
+                if (direction < -maxDirection) {
+                    direction = -maxDirection;
                 }
 
                 //lastDirection = direction;
@@ -195,9 +169,9 @@ public class Drivetrain extends Subsystem {
         //enc.reset();
     }
 
-    public void turnDirectionCW(float newAngle){
+    public void turnDirectionCCW(float newAngle){
 
-        enc.reset();
+        //enc.reset();
         float stoppingAngle = -18f;
         newAngle -= stoppingAngle;
         float turnError = 0;
@@ -231,6 +205,47 @@ public class Drivetrain extends Subsystem {
 
                 lastTurn = turn;
                 autoDrive(0, -0.5);
+
+        }
+        autoDrive(0, 0);
+    }
+
+    public void turnDirectionCW(float newAngle){
+
+        //enc.reset();
+        float stoppingAngle = 15f; //This will change on new robot.
+        newAngle -= stoppingAngle;
+        float turnError = 0;
+        float turnAdjustment = 0;
+        float maxTurnAdjustment = .01f;
+        float lastTurn = 0;
+        float minimumTurn = 0;
+        float KpTurn = .025f;
+        float maxTurn = 1f;
+        float turn = 0;
+
+        while (newAngle > gyro.getAngle()) {
+
+            turnError = (-newAngle + (float)gyro.getAngle());
+
+            turnAdjustment = turnError * KpTurn;
+            if (turnAdjustment > maxTurnAdjustment) {
+                turnAdjustment = maxTurnAdjustment;
+            }
+            if (turnAdjustment < -maxTurnAdjustment) {
+                turnAdjustment = -maxTurnAdjustment;
+            }
+
+            turn = lastTurn + turnAdjustment;
+            if (turn > maxTurn) {
+                turn = maxTurn;
+            }
+            if (turn < minimumTurn) {
+                turn = minimumTurn;
+            }
+
+            lastTurn = turn;
+            autoDrive(0, 0.5);
 
         }
         autoDrive(0, 0);
