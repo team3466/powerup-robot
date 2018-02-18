@@ -1,17 +1,13 @@
-package org.usfirst.frc.team3466.robot.commands;
+package org.usfirst.frc.team3466.robot.commands.cubeController;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team3466.robot.Robot;
 
-import static org.usfirst.frc.team3466.robot.subsystems.Drivetrain.oi;
-
-
-public class DriveArcadeCommand extends Command {
-    public DriveArcadeCommand() {
+public class CubeIntakeCommand extends Command {
+    public CubeIntakeCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.drivetrain);
-
+        requires(Robot.cubeController);
     }
 
 
@@ -21,7 +17,7 @@ public class DriveArcadeCommand extends Command {
      */
     @Override
     protected void initialize() {
-        Robot.drivetrain.initDrive();
+        Robot.cubeController.initDrive();
     }
 
 
@@ -31,9 +27,7 @@ public class DriveArcadeCommand extends Command {
      */
     @Override
     protected void execute() {
-        Robot.drivetrain.teleopDrive(-oi.stick.getY(),-oi.stick.getX()) ;
-        Robot.drivetrain.enc.reset();
-        System.out.println("Execute Drive Command");
+        Robot.cubeController.cubeIntake();
     }
 
 
@@ -69,7 +63,7 @@ public class DriveArcadeCommand extends Command {
      */
     @Override
     protected void end() {
-        Robot.drivetrain.teleopDrive(0, 0) ;
+        Robot.cubeController.cubeStop();
     }
 
 
@@ -89,7 +83,7 @@ public class DriveArcadeCommand extends Command {
      */
     @Override
     protected void interrupted() {
-        Robot.drivetrain.teleopDrive(0, 0) ;
+        Robot.cubeController.cubeStop();
         super.interrupted();
     }
 }

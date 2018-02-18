@@ -3,6 +3,8 @@ package org.usfirst.frc.team3466.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import org.usfirst.frc.team3466.robot.commands.elevator.LowerElevator;
+import org.usfirst.frc.team3466.robot.commands.elevator.RaiseElevator;
 //import edu.wpi.first.wpilibj.command.Command;
 
 public class OI {
@@ -11,12 +13,17 @@ public class OI {
     // One type of button is a joystick button which is any button on a joystick.
     // You create one by telling it which joystick it's on and which button
     // number it is.
-
     public Joystick stick = new Joystick(RobotMap.joystick);
 
+    Button button3 = new JoystickButton(stick, 3);
+    Button button4 = new JoystickButton(stick,4);
+    //public int povAngle = stick.getPOV();
+    //Button button14 = new JoystickButton(stick, 14);
 
         public OI(){
 
+            button3.whileHeld(new RaiseElevator());
+            button4.whileHeld(new LowerElevator());
             //pitcherBtn.whenPressed(new FuelShoot());
       }
 

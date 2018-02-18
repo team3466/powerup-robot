@@ -14,8 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
-import org.usfirst.frc.team3466.robot.commands.DriveArcadeCommand;
-import org.usfirst.frc.team3466.robot.commands.DriveAutonomousCommand;
+import org.usfirst.frc.team3466.robot.commands.cubeController.CubeEjectCommand;
+import org.usfirst.frc.team3466.robot.commands.cubeController.CubeIntakeCommand;
+import org.usfirst.frc.team3466.robot.commands.cubeController.CubeLeftAdjustCommand;
+import org.usfirst.frc.team3466.robot.commands.cubeController.CubeRightAdjustCommand;
+import org.usfirst.frc.team3466.robot.commands.drive.DriveArcadeCommand;
+import org.usfirst.frc.team3466.robot.commands.drive.DriveAutonomousCommand;
 import org.usfirst.frc.team3466.robot.subsystems.Climber;
 import org.usfirst.frc.team3466.robot.subsystems.CubeController;
 import org.usfirst.frc.team3466.robot.subsystems.Drivetrain;
@@ -51,6 +55,10 @@ public class Robot extends IterativeRobot
 
     Command autonomousCommand;
     Command teleopCommand;
+    Command cubeEjectCommand; //TEST
+    Command cubeIntakeCommand;
+    Command cubeLeftAdjustCommand;
+    Command cubeRightAdjustCommand;
     CameraServer server;
 
     /**
@@ -63,6 +71,11 @@ public class Robot extends IterativeRobot
 
         autonomousCommand = new DriveAutonomousCommand();
         teleopCommand = new DriveArcadeCommand();
+        cubeEjectCommand = new CubeEjectCommand();
+        cubeIntakeCommand = new CubeIntakeCommand();
+        cubeLeftAdjustCommand = new CubeLeftAdjustCommand();
+        cubeRightAdjustCommand = new CubeRightAdjustCommand();
+
 
         gyro.calibrate();
 
@@ -138,7 +151,8 @@ public class Robot extends IterativeRobot
     }
 
     /**
-     * This function is called once at the beginning of operator control.
+     * This function is calle
+     * d once at the beginning of operator control.
      */
     @Override
     public void teleopInit()
@@ -152,6 +166,25 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic() 
     {
+        int currentPOVAngle = Robot.cubeController.currentPOVAngle();
+        if(currentPOVAngle == 0) {
+            cubeEjectCommand.start();
+        }
+        else if(currentPOVAngle == 90) {
+            cubeRightAdjustCommand.start();
+        }
+        else if(currentPOVAngle == 180) {
+            cubeIntakeCommand.start();
+        }
+        else if(currentPOVAngle == 270) {
+            cubeLeftAdjustCommand.start();
+        }
+        else if(currentPOVAngle == -1) {
+            cubeLeftAdjustCommand.cancel();
+            cubeRightAdjustCommand.cancel();
+            cubeIntakeCommand.cancel();
+            cubeEjectCommand.cancel();
+        }
         Scheduler.getInstance().run();
     }
 

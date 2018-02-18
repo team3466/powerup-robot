@@ -1,9 +1,8 @@
 package org.usfirst.frc.team3466.robot;
 
-import edu.wpi.first.wpilibj.ADXL362;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
@@ -20,8 +19,10 @@ public class RobotMap {
 
     public static int leftMotorPort = 0;
     public static int rightMotorPort = 1;
-    public static int elevatorPort = 2;
-    public static int climberPort = 3;
+    public static int elevatorPort = 4;
+    public static int rightArmPort = 7;
+    public static int leftArmPort = 8;
+    //public static int climberPort = 3;
     //public static int port = 7;
     //public static int port = 8;
     //public statid int port = 9;
@@ -34,8 +35,11 @@ public class RobotMap {
     public static Spark leftMotor = new Spark(leftMotorPort);
     //public static Victor rightMotor = new Victor(rightMotorPort);
     //public static Victor leftMotor = new Victor(leftMotorPort);
-    public static Spark elevator = new Spark(elevatorPort);
-    public static Spark climber = new Spark(climberPort);
+    public static Victor elevator = new Victor(elevatorPort);
+    public static Victor leftArm = new Victor(leftArmPort);
+    public static Victor rightArm = new Victor(rightArmPort);
+
+    //public static Spark climber = new Spark(climberPort);
     //public static Victor captainHook = new Victor(captainHookPort);
 
     public static Gyro gyro = new ADXRS450_Gyro();

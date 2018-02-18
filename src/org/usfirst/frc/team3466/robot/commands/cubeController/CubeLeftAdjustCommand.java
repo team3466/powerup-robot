@@ -1,15 +1,13 @@
-package org.usfirst.frc.team3466.robot.commands;
+package org.usfirst.frc.team3466.robot.commands.cubeController;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team3466.robot.Robot;
 
-
-public class DriveAutonomousCommand extends Command {
-    public DriveAutonomousCommand() {
+public class CubeLeftAdjustCommand extends Command {
+    public CubeLeftAdjustCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.drivetrain);
+        requires(Robot.cubeController);
     }
 
 
@@ -19,7 +17,7 @@ public class DriveAutonomousCommand extends Command {
      */
     @Override
     protected void initialize() {
-        Robot.drivetrain.initDrive();
+        Robot.cubeController.initDrive();
     }
 
 
@@ -29,42 +27,11 @@ public class DriveAutonomousCommand extends Command {
      */
     @Override
     protected void execute() {
-        Robot.drivetrain.driveDistanceForward(90-4, 0);
-        //Timer.delay(2);
-        Robot.drivetrain.turnDirectionCCW(-90);
-        //Timer.delay(2);
-        Robot.drivetrain.driveDistanceForward(252-4, -90);
-        //Timer.delay(2);
-        Robot.drivetrain.turnDirectionCCW(-180);
-        //Timer.delay(2);
-        Robot.drivetrain.driveDistanceForward(58-4, -180);
-        //Timer.delay(8);
-        Robot.drivetrain.turnDirectionCW(-90);
-        //Timer.delay(2);
-        Robot.drivetrain.driveDistanceForward(72-4, -90);
-        //Timer.delay(2);
-        Robot.drivetrain.turnDirectionCW(0);
-        //Timer.delay(2);
-        Robot.drivetrain.driveDistanceForward(162-4, 0);
-        //Timer.delay(4);
-        Robot.drivetrain.turnDirectionCW(45);
-        //Timer.delay(4);
-        Robot.drivetrain.driveDistanceForward(27-4, 45);
-        //Timer.delay(4);
-        Robot.drivetrain.turnDirectionCCW(0);
-        //Timer.delay(4);
-        Robot.drivetrain.driveDistanceForward(48-4, 0);
-
-        //Timer.delay(.2);
-        //Robot.drivetrain.driveDistanceForward(120, -90);
-        //Robot.drivetrain.autoDrive(0.5, -0.5);
-        //while(true);
-        //Timer.delay(3);
-        //isFinished();
-     }
+        Robot.cubeController.cubeLeftAdjust();
+    }
 
 
-     /**
+    /**
      * <p>
      * Returns whether this command is finished. If it is, then the command will be removed and
      * {@link #end()} will be called.
@@ -84,7 +51,7 @@ public class DriveAutonomousCommand extends Command {
     @Override
     protected boolean isFinished() {
         // TODO: Make this return true when this Command no longer needs to run execute()
-        return true;
+        return false;
     }
 
 
@@ -96,7 +63,7 @@ public class DriveAutonomousCommand extends Command {
      */
     @Override
     protected void end() {
-        Robot.drivetrain.autoDrive(0, 0) ;
+        Robot.cubeController.cubeStop();
     }
 
 
@@ -116,7 +83,7 @@ public class DriveAutonomousCommand extends Command {
      */
     @Override
     protected void interrupted() {
-        Robot.drivetrain.autoDrive(0, 0) ;
+        Robot.cubeController.cubeStop();
         super.interrupted();
     }
 }

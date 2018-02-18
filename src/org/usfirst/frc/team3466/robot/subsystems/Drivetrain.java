@@ -3,12 +3,11 @@ package org.usfirst.frc.team3466.robot.subsystems;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import org.usfirst.frc.team3466.robot.OI;
 import org.usfirst.frc.team3466.robot.RobotMap;
-import org.usfirst.frc.team3466.robot.commands.DriveArcadeCommand;
+import org.usfirst.frc.team3466.robot.commands.drive.DriveArcadeCommand;
 
 import static org.usfirst.frc.team3466.robot.RobotMap.gyro;
 
@@ -39,8 +38,8 @@ public class Drivetrain extends Subsystem {
             differentialDrive = new DifferentialDrive(RobotMap.leftMotor, RobotMap.rightMotor);
 
             //double distance = enc.getDistance();
-            //enc.setDistancePerPulse(0.0130291666666667); 6-inch
-            enc.setDistancePerPulse(0.0349); //4-inch with 360 degree accuracy
+            enc.setDistancePerPulse(0.05235833); //6-inch
+            //enc.setDistancePerPulse(0.0349); //4-inch with 360 degree accuracy
             enc.setReverseDirection(true);
             enc.reset();
             alreadyExecuted = true;
@@ -71,7 +70,7 @@ public class Drivetrain extends Subsystem {
         enc.reset();
         float maxSpeedAdjustment = .01f;
         float lastSpeed = 0;
-        float minimumSpeed = .5f;
+        float minimumSpeed = .35f;
         float maxSpeed = 1f;
         float speed = 0;
 
@@ -81,7 +80,7 @@ public class Drivetrain extends Subsystem {
         float KpDirection = .05f;
         float maxDirection = 0.4f;
         float direction = 0;
-        float stoppingDistance = 30;
+        float stoppingDistance = 42;
 
         //enc.reset();
         float currentDistance = 0;
@@ -106,8 +105,8 @@ public class Drivetrain extends Subsystem {
 
                 lastSpeed = speed;
 
-                directionError = (desiredDirection - (float)gyro.getAngle());
-                //directionError = (-desiredDirection + (float)gyro.getAngle()); New Robot
+                //directionError = (desiredDirection - (float)-gyro.getAngle()); Old Robot
+                directionError = (-desiredDirection + (float)-gyro.getAngle()); //New Robot
 
                 directionAdjustment = directionError * KpDirection;
 
@@ -137,8 +136,8 @@ public class Drivetrain extends Subsystem {
 
                 lastSpeed = speed;
 
-                directionError = (desiredDirection - (float)gyro.getAngle());
-                //directionError = (-desiredDirection + (float)gyro.getAngle()); New Robot
+                //directionError = (desiredDirection - (float)-gyro.getAngle()); Old Robot
+                directionError = (-desiredDirection + (float)-gyro.getAngle()); //New Robot
 
                 directionAdjustment = directionError * KpDirection * speed;
                      /*   if (directionAdjustment > maxDirectionAdjustment){
@@ -172,7 +171,8 @@ public class Drivetrain extends Subsystem {
     public void turnDirectionCCW(float newAngle){
 
         //enc.reset();
-        float stoppingAngle = -18f;
+        float stoppingAngle = -27;
+        //float stoppingAngle = -18; //Old Robot
         newAngle -= stoppingAngle;
         float turnError = 0;
         float turnAdjustment = 0;
@@ -183,9 +183,9 @@ public class Drivetrain extends Subsystem {
         float maxTurn = 1f;
         float turn = 0;
 
-        while (newAngle < gyro.getAngle()) {
+        while (newAngle < -gyro.getAngle()) {
 
-                turnError = (-newAngle + (float)gyro.getAngle());
+                turnError = (-newAngle + (float)-gyro.getAngle());
 
                 turnAdjustment = turnError * KpTurn;
                 if (turnAdjustment > maxTurnAdjustment) {
@@ -204,7 +204,7 @@ public class Drivetrain extends Subsystem {
                 }
 
                 lastTurn = turn;
-                autoDrive(0, -0.5);
+                autoDrive(0, -0.35);
 
         }
         autoDrive(0, 0);
@@ -213,7 +213,7 @@ public class Drivetrain extends Subsystem {
     public void turnDirectionCW(float newAngle){
 
         //enc.reset();
-        float stoppingAngle = 15f; //This will change on new robot.
+        float stoppingAngle = 40f; //This will change on new robot.
         newAngle -= stoppingAngle;
         float turnError = 0;
         float turnAdjustment = 0;
@@ -224,9 +224,9 @@ public class Drivetrain extends Subsystem {
         float maxTurn = 1f;
         float turn = 0;
 
-        while (newAngle > gyro.getAngle()) {
+        while (newAngle > -gyro.getAngle()) {
 
-            turnError = (-newAngle + (float)gyro.getAngle());
+            turnError = (-newAngle + (float)-gyro.getAngle());
 
             turnAdjustment = turnError * KpTurn;
             if (turnAdjustment > maxTurnAdjustment) {
