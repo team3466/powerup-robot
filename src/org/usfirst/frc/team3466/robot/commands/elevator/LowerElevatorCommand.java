@@ -2,11 +2,9 @@ package org.usfirst.frc.team3466.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team3466.robot.Robot;
-import org.usfirst.frc.team3466.robot.subsystems.Elevator;
-import org.usfirst.frc.team3466.robot.RobotMap;
 
-public class RaiseElevator extends Command {
-    public RaiseElevator() {
+public class LowerElevatorCommand extends Command {
+    public LowerElevatorCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.elevator);
@@ -29,7 +27,7 @@ public class RaiseElevator extends Command {
      */
     @Override
     protected void execute() {
-        Robot.elevator.raiseElevator();
+        Robot.elevator.lowerElevator();
     }
 
 
@@ -85,6 +83,7 @@ public class RaiseElevator extends Command {
      */
     @Override
     protected void interrupted() {
+        Robot.elevator.stopElevator();
         super.interrupted();
     }
 }

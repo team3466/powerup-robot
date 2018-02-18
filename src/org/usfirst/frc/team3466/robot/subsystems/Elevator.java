@@ -10,7 +10,7 @@ public class Elevator extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    Victor elevstor = elevator;
+    Victor elevator = RobotMap.elevator;
 
     public void initDefaultCommand() {
         // TODO: Set the default command, if any, for a subsystem here. Example:
@@ -18,7 +18,7 @@ public class Elevator extends Subsystem {
     }
 
     public void raiseElevator() {
-        elevator.set(1.0);
+        elevator.set(0.8);
     }
 
     public void lowerElevator() {
@@ -26,7 +26,7 @@ public class Elevator extends Subsystem {
     }
 
     public void stopElevator() {
-        elevstor.set(0);
+        elevator.set(0);
     }
 }
 

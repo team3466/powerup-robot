@@ -25,9 +25,10 @@ public class RobotMap {
     //public static int climberPort = 3;
     //public static int port = 7;
     //public static int port = 8;
-    //public statid int port = 9;
+    //public static int port = 9;
     //public static int pitcherPort = 5;
-
+    public static int extenderPort = 2;
+    public static int climberPort = 9;
 
     //Sparks are for this year's robot, Victors for last year's.
 
@@ -38,6 +39,8 @@ public class RobotMap {
     public static Victor elevator = new Victor(elevatorPort);
     public static Victor leftArm = new Victor(leftArmPort);
     public static Victor rightArm = new Victor(rightArmPort);
+    public static Spark climber = new Spark(climberPort);
+    public static Spark extender = new Spark(extenderPort);
 
     //public static Spark climber = new Spark(climberPort);
     //public static Victor captainHook = new Victor(captainHookPort);

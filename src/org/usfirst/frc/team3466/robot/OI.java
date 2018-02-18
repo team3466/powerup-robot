@@ -3,8 +3,12 @@ package org.usfirst.frc.team3466.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import org.usfirst.frc.team3466.robot.commands.elevator.LowerElevator;
-import org.usfirst.frc.team3466.robot.commands.elevator.RaiseElevator;
+import org.usfirst.frc.team3466.robot.commands.climber.ForwardClimbCommand;
+import org.usfirst.frc.team3466.robot.commands.climber.ReverseClimbCommand;
+import org.usfirst.frc.team3466.robot.commands.elevator.LowerElevatorCommand;
+import org.usfirst.frc.team3466.robot.commands.elevator.RaiseElevatorCommand;
+import org.usfirst.frc.team3466.robot.commands.extender.LowerExtenderCommand;
+import org.usfirst.frc.team3466.robot.commands.extender.RaiseExtenderCommand;
 //import edu.wpi.first.wpilibj.command.Command;
 
 public class OI {
@@ -15,15 +19,24 @@ public class OI {
     // number it is.
     public Joystick stick = new Joystick(RobotMap.joystick);
 
+
+    Button button1 = new JoystickButton(stick, 1);
+    Button button2 = new JoystickButton(stick, 2);
     Button button3 = new JoystickButton(stick, 3);
     Button button4 = new JoystickButton(stick,4);
+    Button button5 = new JoystickButton(stick, 5);
+    Button button6 = new JoystickButton(stick, 6);
     //public int povAngle = stick.getPOV();
     //Button button14 = new JoystickButton(stick, 14);
 
         public OI(){
 
-            button3.whileHeld(new RaiseElevator());
-            button4.whileHeld(new LowerElevator());
+            button2.whileHeld(new ReverseClimbCommand());
+            button3.whileHeld(new RaiseElevatorCommand());
+            button4.whileHeld(new LowerElevatorCommand());
+            button1.whileHeld(new ForwardClimbCommand());
+            button5.whileHeld(new RaiseExtenderCommand());
+            button6.whileHeld(new LowerExtenderCommand());
             //pitcherBtn.whenPressed(new FuelShoot());
       }
 

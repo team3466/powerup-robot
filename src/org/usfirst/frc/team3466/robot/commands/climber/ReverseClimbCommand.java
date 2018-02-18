@@ -1,13 +1,12 @@
-package org.usfirst.frc.team3466.robot.commands.elevator;
+package org.usfirst.frc.team3466.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team3466.robot.Robot;
 
-public class LowerElevator extends Command {
-    public LowerElevator() {
+public class ReverseClimbCommand extends Command {
+    public ReverseClimbCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.elevator);
     }
 
 
@@ -27,7 +26,7 @@ public class LowerElevator extends Command {
      */
     @Override
     protected void execute() {
-        Robot.elevator.lowerElevator();
+        Robot.climber.reverseClimb();
     }
 
 
@@ -63,7 +62,7 @@ public class LowerElevator extends Command {
      */
     @Override
     protected void end() {
-        Robot.elevator.stopElevator();
+        Robot.climber.stopClimb();
     }
 
 
@@ -83,6 +82,7 @@ public class LowerElevator extends Command {
      */
     @Override
     protected void interrupted() {
+        Robot.climber.stopClimb();
         super.interrupted();
     }
 }
