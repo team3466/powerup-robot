@@ -22,12 +22,14 @@ public class Drivetrain extends Subsystem {
     public static Encoder enc = new Encoder(0, 1, false, Encoder.EncodingType.k4X);
     //Encoder enc;
 
-
-
     public void initDefaultCommand() {
         // TODO: Set the default command, if any, for a subsystem here. Example:
         //    setDefaultCommand(new MySpecialCommand());
         setDefaultCommand(new DriveArcadeCommand());
+    }
+
+    public static void setInverseDriveOn(boolean inverseDriveOn) {
+        InverseDriveOn = inverseDriveOn;
     }
 
     boolean alreadyExecuted = false;
@@ -52,16 +54,10 @@ public class Drivetrain extends Subsystem {
     }
 
     public void teleopDrive(double Y, double X) {
-        differentialDrive.arcadeDrive(Y, -X, true);
-    }
-
-    public void driveInverse(double Y, double X) {
-
         if (InverseDriveOn){
-            X = -X;
+            X = X;
             Y = -Y;
         }
-
         differentialDrive.arcadeDrive(Y, -X, true);
     }
 

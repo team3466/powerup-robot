@@ -5,10 +5,13 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc.team3466.robot.commands.climber.ForwardClimbCommand;
 import org.usfirst.frc.team3466.robot.commands.climber.ReverseClimbCommand;
+import org.usfirst.frc.team3466.robot.commands.drive.DriveArcadeInverseCommand;
 import org.usfirst.frc.team3466.robot.commands.elevator.LowerElevatorCommand;
 import org.usfirst.frc.team3466.robot.commands.elevator.RaiseElevatorCommand;
 import org.usfirst.frc.team3466.robot.commands.extender.LowerExtenderCommand;
 import org.usfirst.frc.team3466.robot.commands.extender.RaiseExtenderCommand;
+import org.usfirst.frc.team3466.robot.commands.slider.SlideBackwardCommand;
+import org.usfirst.frc.team3466.robot.commands.slider.SlideForwardCommand;
 //import edu.wpi.first.wpilibj.command.Command;
 
 public class OI {
@@ -26,17 +29,23 @@ public class OI {
     Button button4 = new JoystickButton(stick,4);
     Button button5 = new JoystickButton(stick, 5);
     Button button6 = new JoystickButton(stick, 6);
+    Button button7 = new JoystickButton(stick, 7);
+    Button button11 = new JoystickButton(stick, 11);
+    Button button12 = new JoystickButton(stick, 12);
     //public int povAngle = stick.getPOV();
     //Button button14 = new JoystickButton(stick, 14);
 
         public OI(){
 
-            button2.whileHeld(new ReverseClimbCommand());
+            button1.whileHeld(new ForwardClimbCommand());
+            //button2.whileHeld(new ReverseClimbCommand());
             button3.whileHeld(new RaiseElevatorCommand());
             button4.whileHeld(new LowerElevatorCommand());
-            button1.whileHeld(new ForwardClimbCommand());
             button5.whileHeld(new RaiseExtenderCommand());
             button6.whileHeld(new LowerExtenderCommand());
+            button2.whileHeld(new DriveArcadeInverseCommand());
+            //button11.whileHeld(new SlideForwardCommand());
+            //button12.whileHeld(new SlideBackwardCommand());
             //pitcherBtn.whenPressed(new FuelShoot());
       }
 

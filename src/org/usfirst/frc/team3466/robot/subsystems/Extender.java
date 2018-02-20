@@ -22,7 +22,7 @@ public class Extender extends Subsystem {
     }
 
     public void lowerExtender() {
-        extender.set(-0.5);
+        extender.set(-1.0);
     }
 
     public void stopExtender() {

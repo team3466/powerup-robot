@@ -20,11 +20,14 @@ import org.usfirst.frc.team3466.robot.commands.cubeController.CubeLeftAdjustComm
 import org.usfirst.frc.team3466.robot.commands.cubeController.CubeRightAdjustCommand;
 import org.usfirst.frc.team3466.robot.commands.drive.DriveArcadeCommand;
 import org.usfirst.frc.team3466.robot.commands.drive.DriveAutonomousCommand;
+import org.usfirst.frc.team3466.robot.commands.slider.SlideBackwardCommand;
+import org.usfirst.frc.team3466.robot.commands.slider.SlideForwardCommand;
 import org.usfirst.frc.team3466.robot.subsystems.Climber;
 import org.usfirst.frc.team3466.robot.subsystems.CubeController;
 import org.usfirst.frc.team3466.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team3466.robot.subsystems.Elevator;
 import org.usfirst.frc.team3466.robot.subsystems.Extender;
+import org.usfirst.frc.team3466.robot.subsystems.Slider;
 
 import static org.usfirst.frc.team3466.robot.RobotMap.gyro;
 
@@ -44,6 +47,7 @@ public class Robot extends IterativeRobot
     public static Drivetrain drivetrain = new Drivetrain();
     public static Elevator elevator = new Elevator();
     public static Extender extender = new Extender();
+    public static Slider slider = new Slider();
 
     private static final String DEFAULT_AUTO = "Default";
     private static final String CUSTOM_AUTO = "My Auto";
@@ -59,6 +63,8 @@ public class Robot extends IterativeRobot
     Command cubeIntakeCommand;
     Command cubeLeftAdjustCommand;
     Command cubeRightAdjustCommand;
+    Command slideForwardCommand;
+    Command slideBackwardCommand;
     CameraServer server;
 
     /**
@@ -75,6 +81,8 @@ public class Robot extends IterativeRobot
         cubeIntakeCommand = new CubeIntakeCommand();
         cubeLeftAdjustCommand = new CubeLeftAdjustCommand();
         cubeRightAdjustCommand = new CubeRightAdjustCommand();
+        slideForwardCommand = new SlideForwardCommand();
+        slideBackwardCommand = new SlideBackwardCommand();
 
 
         gyro.calibrate();
@@ -166,6 +174,7 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic() 
     {
+        //Joystick control for cube intake.
         int currentPOVAngle = Robot.cubeController.currentPOVAngle();
         if(currentPOVAngle == 0) {
             cubeEjectCommand.start();
@@ -184,6 +193,14 @@ public class Robot extends IterativeRobot
             cubeRightAdjustCommand.cancel();
             cubeIntakeCommand.cancel();
             cubeEjectCommand.cancel();
+        }
+
+        double currentThrottleValue = Robot.slider.currentThrottleValue();
+        if(currentThrottleValue <= -0.5) {
+            slideBackwardCommand.start();
+        }
+        else if(currentThrottleValue >= 0.5) {
+            slideForwardCommand.start();
         }
         Scheduler.getInstance().run();
     }

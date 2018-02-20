@@ -36,9 +36,12 @@ public class RobotMap {
     public static Spark leftMotor = new Spark(leftMotorPort);
     //public static Victor rightMotor = new Victor(rightMotorPort);
     //public static Victor leftMotor = new Victor(leftMotorPort);
-    public static Victor elevator = new Victor(elevatorPort);
-    public static Victor leftArm = new Victor(leftArmPort);
-    public static Victor rightArm = new Victor(rightArmPort);
+    //public static Victor elevator = new Victor(elevatorPort);
+    //public static Victor leftArm = new Victor(leftArmPort);
+    //public static Victor rightArm = new Victor(rightArmPort);
+    public static Spark elevator = new Spark(elevatorPort);
+    public static Spark leftArm = new Spark(leftArmPort);
+    public static Spark rightArm = new Spark(rightArmPort);
     public static Spark climber = new Spark(climberPort);
     public static Spark extender = new Spark(extenderPort);
 
